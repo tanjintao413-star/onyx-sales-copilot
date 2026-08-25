@@ -1,3 +1,33 @@
+# Enterprise AI Sales Copilot
+
+This is a portfolio-oriented secondary development project built on **Onyx Community Edition**. It does not claim to be a from-scratch implementation of Onyx: the original Onyx source, Git history, attribution, and [MIT license](LICENSE) are preserved.
+
+The added Sales Copilot workflow combines Onyx-native Agent tool calling, Search Tool retrieval, and citations with a typed CRM Custom Action backed by FastAPI, SQLAlchemy, and PostgreSQL.
+
+- Native RAG retrieval with citations
+- Sales CRM Custom Action and PostgreSQL demo data
+- ROI calculation tool
+- Explicit `confirmed=true` mutation confirmation guard
+- Native Onyx Agent tool calling
+- Live, manual end-to-end Demo 1–5 validation passed
+
+All CRM and business records are **local, deterministic demo data**; they are not a production CRM. The mutation guard is an application-level confirmation boundary, not an independent HITL approval system.
+
+```text
+User
+  → Onyx Agent
+    ├─ Search Tool → RAG / OpenSearch → citations
+    └─ Sales Custom Action → FastAPI → SQLAlchemy → PostgreSQL
+```
+
+- [What's changed from Onyx](CHANGES_FROM_ONYX.md)
+- [Sales Copilot demo guide](SALES_DEMO_GUIDE.md)
+- [Technical walkthrough](TECHNICAL_WALKTHROUGH.md)
+
+---
+
+## Upstream Onyx Community Edition
+
 <a name="readme-top"></a>
 
 <h2 align="center">
