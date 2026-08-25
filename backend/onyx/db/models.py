@@ -5614,6 +5614,66 @@ class UserFile(Base):
     )
 
 
+class SalesAccount(Base):
+    """Demo CRM account. Kept separate from Onyx user and connector data."""
+
+    __tablename__ = "sales_account"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
+    industry: Mapped[str] = mapped_column(String(100), nullable=False)
+    employee_count: Mapped[int] = mapped_column(Integer, nullable=False)
+    region: Mapped[str] = mapped_column(String(100), nullable=False)
+    notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+
+
+class SalesContact(Base):
+    __tablename__ = "sales_contact"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    account_id: Mapped[int] = mapped_column(ForeignKey("sales_account.id", ondelete="CASCADE"), nullable=False)
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    title: Mapped[str] = mapped_column(String(150), nullable=False)
+    email: Mapped[str] = mapped_column(String(255), nullable=False)
+
+
+class SalesOpportunity(Base):
+    __tablename__ = "sales_opportunity"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    account_id: Mapped[int] = mapped_column(ForeignKey("sales_account.id", ondelete="CASCADE"), nullable=False)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    stage: Mapped[str] = mapped_column(String(50), nullable=False)
+    expected_revenue_rmb: Mapped[float] = mapped_column(Numeric(14, 2), nullable=False)
+    product_name: Mapped[str] = mapped_column(String(150), nullable=False)
+    expected_close_date: Mapped[datetime.date | None] = mapped_column(nullable=True)
+
+
+class SalesProduct(Base):
+    __tablename__ = "sales_product"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String(150), unique=True, nullable=False)
+    edition: Mapped[str] = mapped_column(String(100), nullable=False)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+
+
+class SalesActivity(Base):
+    __tablename__ = "sales_activity"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    account_id: Mapped[int] = mapped_column(ForeignKey("sales_account.id", ondelete="CASCADE"), nullable=False)
+    opportunity_id: Mapped[int | None] = mapped_column(ForeignKey("sales_opportunity.id", ondelete="SET NULL"), nullable=True)
+    activity_type: Mapped[str] = mapped_column(String(50), nullable=False)
+    summary: Mapped[str] = mapped_column(Text, nullable=False)
+    occurred_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now())
+
+
+class SalesFollowUpTask(Base):
+    __tablename__ = "sales_follow_up_task"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    account_id: Mapped[int] = mapped_column(ForeignKey("sales_account.id", ondelete="CASCADE"), nullable=False)
+    opportunity_id: Mapped[int | None] = mapped_column(ForeignKey("sales_opportunity.id", ondelete="SET NULL"), nullable=True)
+    title: Mapped[str] = mapped_column(String(255), nullable=False)
+    due_date: Mapped[datetime.date] = mapped_column(nullable=False)
+    status: Mapped[str] = mapped_column(String(50), nullable=False, default="open")
+
+
 """
 Multi-tenancy related tables
 """
