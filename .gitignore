@@ -15,6 +15,7 @@
 
 # python
 .venv
+artifacts/sales_harness/
 .mypy_cache
 .idea
 __pycache__/

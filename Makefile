@@ -1,4 +1,19 @@
-.PHONY: craft-up craft-down craft-sandbox-image craft-backend-image craft-refresh-images craft-check-images
+.PHONY: craft-up craft-down craft-sandbox-image craft-backend-image craft-refresh-images craft-check-images sales-harness sales-harness-fast sales-harness-integration sales-harness-live
+
+SALES_HARNESS_RUNNER ?= sales-harness-runner
+SALES_HARNESS_PYTHON = docker exec $(SALES_HARNESS_RUNNER) python
+
+sales-harness:
+	$(SALES_HARNESS_PYTHON) scripts/sales_harness.py
+
+sales-harness-fast:
+	$(SALES_HARNESS_PYTHON) scripts/sales_harness.py --fast
+
+sales-harness-integration:
+	$(SALES_HARNESS_PYTHON) scripts/sales_harness.py --integration
+
+sales-harness-live:
+	$(SALES_HARNESS_PYTHON) scripts/sales_harness.py --live-agent
 
 craft-up:
 	deployment/helm/dev/craft-up.sh

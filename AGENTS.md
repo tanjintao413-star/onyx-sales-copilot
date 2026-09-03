@@ -80,6 +80,9 @@ Follow ASD-STE100 Simplified Technical English for technical text:
 
 ## Testing
 
+For Sales Copilot changes, read `docs/sales_copilot/ARCHITECTURE.md` and preserve
+`docs/sales_copilot/INVARIANTS.md`. Run `make sales-harness` before handoff.
+
 There are 4 main types of tests: unit, external dependency unit, integration, and playwright e2e
 (`web/tests/e2e`). Commands and guidance for all four live in `backend/AGENTS.md`; shared fixtures
 and deeper detail in `backend/tests/README.md`. Prefer integration tests over the other types.

@@ -1,5 +1,6 @@
 import logging
 import os
+from pathlib import Path
 from types import SimpleNamespace
 
 import psycopg2
@@ -25,6 +26,7 @@ from onyx.utils.logger import setup_logger
 from tests.integration.common_utils.timeout import run_with_timeout_multiproc
 
 logger = setup_logger()
+BACKEND_DIR = Path(__file__).resolve().parents[3]
 
 
 def _run_migrations(
@@ -38,7 +40,11 @@ def _run_migrations(
     logging.getLogger("alembic").setLevel(logging.CRITICAL)
 
     # Create an Alembic configuration object
-    alembic_cfg = Config("alembic.ini")
+    alembic_cfg = Config(str(BACKEND_DIR / "alembic.ini"))
+    alembic_cfg.set_main_option(
+        "script_location",
+        str(BACKEND_DIR / (alembic_cfg.get_main_option("script_location") or "alembic")),
+    )
     alembic_cfg.set_section_option("logger_alembic", "level", "WARN")
     alembic_cfg.attributes["configure_logger"] = False
     alembic_cfg.config_ini_section = config_name

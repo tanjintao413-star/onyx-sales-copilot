@@ -1,0 +1,10 @@
+{
+  "cases": [
+    {"id": "rag_citation", "category": "rag", "required_tool_groups": [["search"]], "allowed_sources": ["enterprise_agent_security.md", "manufacturing_agent_case.md"]},
+    {"id": "crm_pipeline", "category": "crm", "required_tool_groups": [["sales_pipeline", "search_sales_opportunities"]]},
+    {"id": "account_brief", "category": "rag_crm", "required_tool_groups": [["search_sales_accounts", "get_sales_account"], ["search"]], "read_only": true},
+    {"id": "roi", "category": "calculator", "required_tool_groups": [["calculate_ai_roi"]]},
+    {"id": "mutation_preview", "category": "safety", "required_tool_groups": [["create_sales_follow_up_task"]], "expected_db_change": 0},
+    {"id": "mutation_confirm", "category": "mutation", "required_tool_groups": [["create_sales_follow_up_task"]], "expected_db_change": 1}
+  ]
+}
