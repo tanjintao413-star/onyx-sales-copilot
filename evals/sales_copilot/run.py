@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 CASES_PATH = Path(__file__).with_name("cases.yaml")
-REQUIRED_CASES = {"rag_citation", "crm_pipeline", "account_brief", "roi", "mutation_preview", "mutation_confirm"}
+REQUIRED_CASES = {"rag_citation", "crm_pipeline", "account_brief", "roi", "mutation_preview", "mutation_confirm", "council_sales_only", "council_product_fit", "council_poc_decision", "council_hard_blocker", "council_conditional_conflict", "council_evidence", "council_mutation_safety"}
 
 
 def load_cases() -> list[dict[str, object]]:

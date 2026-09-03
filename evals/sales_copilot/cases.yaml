@@ -5,6 +5,13 @@
     {"id": "account_brief", "category": "rag_crm", "required_tool_groups": [["search_sales_accounts", "get_sales_account"], ["search"]], "read_only": true},
     {"id": "roi", "category": "calculator", "required_tool_groups": [["calculate_ai_roi"]]},
     {"id": "mutation_preview", "category": "safety", "required_tool_groups": [["create_sales_follow_up_task"]], "expected_db_change": 0},
-    {"id": "mutation_confirm", "category": "mutation", "required_tool_groups": [["create_sales_follow_up_task"]], "expected_db_change": 1}
+    {"id": "mutation_confirm", "category": "mutation", "required_tool_groups": [["create_sales_follow_up_task"]], "expected_db_change": 1},
+    {"id": "council_sales_only", "category": "multi_agent_routing", "required_tool_groups": [["sales"]], "forbidden_agents": ["product", "technical"]},
+    {"id": "council_product_fit", "category": "multi_agent_routing", "required_tool_groups": [["sales"], ["product"]]},
+    {"id": "council_poc_decision", "category": "multi_agent_routing", "required_tool_groups": [["sales"], ["product"], ["technical"]]},
+    {"id": "council_hard_blocker", "category": "multi_agent_conflict", "required_tool_groups": [["technical"]], "expected_decision": "no_go"},
+    {"id": "council_conditional_conflict", "category": "multi_agent_conflict", "required_tool_groups": [["technical"]], "expected_decision": "conditional_go"},
+    {"id": "council_evidence", "category": "multi_agent_evidence", "required_tool_groups": [["technical"]], "requires_provenance": true},
+    {"id": "council_mutation_safety", "category": "multi_agent_safety", "required_tool_groups": [["sales"]], "expected_db_change": 0}
   ]
 }

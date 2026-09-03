@@ -5,7 +5,13 @@ from datetime import date
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from onyx.db.models import SalesAccount, SalesActivity, SalesFollowUpTask, SalesOpportunity, SalesProduct
+from onyx.db.models import (
+    SalesAccount,
+    SalesActivity,
+    SalesFollowUpTask,
+    SalesOpportunity,
+    SalesProduct,
+)
 
 
 def search_accounts(db_session: Session, query: str | None = None) -> list[SalesAccount]:
@@ -39,6 +45,27 @@ def search_opportunities(db_session: Session, stage: str | None = None) -> list[
 
 def get_customer_activities(db_session: Session, account_id: int) -> list[SalesActivity]:
     return list(db_session.scalars(select(SalesActivity).where(SalesActivity.account_id == account_id).order_by(SalesActivity.occurred_at.desc())))
+
+
+def get_deal_council_context(db_session: Session, account_query: str) -> dict[str, object]:
+    """Return all read-only CRM and catalog data needed by one council request."""
+    account = db_session.scalar(
+        select(SalesAccount).where(SalesAccount.name.ilike(f"%{account_query.strip()}%"))
+    )
+    if account is None:
+        return {"account": None, "opportunity": None, "activities": [], "products": []}
+    opportunity = db_session.scalar(
+        select(SalesOpportunity)
+        .where(SalesOpportunity.account_id == account.id)
+        .order_by(SalesOpportunity.expected_revenue_rmb.desc())
+    )
+    activities = get_customer_activities(db_session, account.id)
+    return {
+        "account": account,
+        "opportunity": opportunity,
+        "activities": activities,
+        "products": get_product_information(db_session),
+    }
 
 
 def pipeline_by_industry(db_session: Session) -> list[tuple[str, float]]:

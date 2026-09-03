@@ -20,6 +20,8 @@ from onyx.db.sales_copilot import (
 )
 from onyx.error_handling.error_codes import OnyxErrorCode
 from onyx.error_handling.exceptions import OnyxError
+from onyx.sales_copilot.deal_council.models import DealCouncilDecision
+from onyx.sales_copilot.deal_council.orchestrator import run_deal_council
 
 router = APIRouter(
     prefix="/sales-copilot",
@@ -100,6 +102,10 @@ class RoiResponse(BaseModel):
     formula: str
 
 
+class DealCouncilRequest(BaseModel):
+    request: str = Field(min_length=3, max_length=2000)
+
+
 def _account(account: object) -> AccountResponse:
     return AccountResponse.model_validate(account, from_attributes=True)
 
@@ -140,6 +146,12 @@ def sales_pipeline(db_session: Session = Depends(get_session)) -> dict[str, obje
 @router.get("/products")
 def product_information(query: str | None = None, db_session: Session = Depends(get_session)) -> list[ProductResponse]:
     return [ProductResponse.model_validate(product, from_attributes=True) for product in get_product_information(db_session, query)]
+
+
+@router.post("/deal-council")
+def evaluate_deal_council(body: DealCouncilRequest, db_session: Session = Depends(get_session)) -> DealCouncilDecision:
+    """Return a read-only cross-functional deal decision and action proposals."""
+    return run_deal_council(body.request, db_session)
 
 
 @router.post("/follow-up-tasks")

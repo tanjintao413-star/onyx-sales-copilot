@@ -8,3 +8,14 @@
 - **INV-006:** The Sales seed produces deterministic CRM expectations.
 
 The confirmation field is model-callable. It is not an independent human-in-the-loop approval system.
+
+## Multi-Agent Deal Council
+
+- **MA-INV-001:** Specialists are read-only.
+- **MA-INV-002:** Routing selects only required specialists.
+- **MA-INV-003:** A hard blocker prevents unconditional `go`.
+- **MA-INV-004:** Evidence has a source and source type.
+- **MA-INV-005:** Conflict resolution has one round at most.
+- **MA-INV-006:** The Council returns proposals. It cannot execute CRM mutations.
+- **MA-INV-007:** Final synthesis uses typed assessments, not concatenated essays.
+- **MA-INV-008:** Sales Harness V1 remains part of the deterministic Harness.
