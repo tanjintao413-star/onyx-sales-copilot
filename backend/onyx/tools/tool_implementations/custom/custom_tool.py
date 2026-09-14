@@ -295,9 +295,8 @@ def build_custom_tools_from_openapi_schema_and_headers(
       - ``USER_EMAIL``       -> current user email (skipped for anonymous users)
 
     Placeholders whose value is ``None`` (e.g. an anonymous user's identity)
-    are left untouched in the schema rather than substituted with an empty
-    string. Substitution only happens inside the OpenAPI schema; static
-    ``custom_headers`` are not templated.
+    remain unchanged. Substitution applies to the OpenAPI schema and configured
+    header values. Header templates stay internal and are not exposed to the LLM.
     """
     if dynamic_schema_info:
         schema_str = json.dumps(openapi_schema)
@@ -313,6 +312,14 @@ def build_custom_tools_from_openapi_schema_and_headers(
                 schema_str = schema_str.replace(placeholder, str(value))
 
         openapi_schema = json.loads(schema_str)
+        if custom_headers:
+            custom_headers = [dict(header) for header in custom_headers]
+            for header in custom_headers:
+                for placeholder, value in placeholders.items():
+                    if value:
+                        header["value"] = header["value"].replace(
+                            placeholder, str(value)
+                        )
 
     url = openapi_to_url(openapi_schema)
     method_specs = openapi_to_method_specs(openapi_schema)

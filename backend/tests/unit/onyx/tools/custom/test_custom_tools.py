@@ -313,11 +313,9 @@ class TestCustomTool(unittest.TestCase):
         )
 
         expected_url = f"http://localhost:8080/users/{user_id}/by-email/{user_email}"
-        # Custom headers do NOT receive placeholder substitution today;
-        # only the OpenAPI schema string is templated.
         expected_headers = {
-            "X-Onyx-User-Id": "USER_ID",
-            "X-Onyx-User-Email": "USER_EMAIL",
+            "X-Onyx-User-Id": str(user_id),
+            "X-Onyx-User-Email": user_email,
         }
         mock_request.assert_called_once_with(
             "GET", expected_url, json=None, headers=expected_headers

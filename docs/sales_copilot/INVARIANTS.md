@@ -7,7 +7,10 @@
 - **INV-005:** Citation checks use structured source metadata.
 - **INV-006:** The Sales seed produces deterministic CRM expectations.
 
-The confirmation field is model-callable. It is not an independent human-in-the-loop approval system.
+The confirmation field and ticket are model-callable. The server accepts the
+ticket only from the next explicit user-confirmation message in the same chat
+branch. A model cannot preview and consume a ticket in one user turn. This is a
+Sales mutation guard, not a general approval-workflow system.
 
 ## Multi-Agent Deal Council
 

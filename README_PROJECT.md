@@ -28,11 +28,34 @@ flowchart TD
 
 1. Follow the root `CONTRIBUTING.md` prerequisites: Python 3.13, uv, Docker and Bun.
 2. Start standard Onyx services, then run `uv run alembic upgrade head` from `backend/`.
-3. Run `uv run python backend/scripts/seed_sales_copilot_demo.py` from the repository root.
-4. Configure an Onyx Custom Action using the server OpenAPI schema and attach it, plus Onyx Search, to a “Sales Copilot” agent. The API prefix is `/sales-copilot`.
-5. Ingest the markdown knowledge files through an Onyx file or connector flow. This preserves native retrieval and citations.
+3. Register the local demo user and ingest the two markdown knowledge files through
+   an Onyx file or connector flow. This preserves native retrieval and citations.
+4. Create the Sales Custom Action from the live server OpenAPI schema; the API
+   prefix is `/sales-copilot`.
+5. Run `uv run python backend/scripts/seed_sales_copilot_demo.py --admin-email <local-user-email>`
+   from the repository root. The idempotent bootstrap uses Onyx's native Admin
+   group helper, refreshes the existing Sales Action schema, and configures the
+   Chinese-first `销售助手 · Sales Copilot` Persona with Search, Action and knowledge.
+
+This CE checkout ships UI locales for English, Spanish, Portuguese, French and
+German, but not Simplified Chinese. The bootstrap therefore keeps the stored UI
+locale valid and makes the Sales-specific Agent name, description, instructions,
+starters and responses Chinese-first; it does not claim to translate upstream UI.
 
 For mutating tools, the intended UX is preview followed by user approval before `confirmed=true`. This is an application-level confirmation guard, not an independent HITL approval system: a model that is permitted to call the Action can itself supply `confirmed=true`.
+
+## Demo Reset
+
+Before an interview or demo:
+
+1. Start the documented Onyx Docker services.
+2. Run `uv run python backend/scripts/seed_sales_copilot_demo.py --reset-benchmark-state`.
+3. Open `http://localhost:3000`.
+4. Select `销售助手 · Sales Copilot`.
+
+The reset restores CRM rows managed by `crm_seed_spec.json`, including benchmark
+activities, opportunity fields and follow-up tasks. It does not upload, delete or
+reindex knowledge files. It does not change Persona, Action, permission or user data.
 
 ## Demo prompts
 
@@ -44,6 +67,15 @@ For mutating tools, the intended UX is preview followed by user approval before 
 
 ## Test status
 
-Live validation completed on 2026-08-25 with the official backend image and standard PostgreSQL, Redis, OpenSearch, MinIO and model-server services. Migration and deterministic seed passed; Persona 1 used Search Tool 1, Custom Action 12 and the indexed knowledge files with a real `deepseek-v4-flash` OpenAI-compatible provider. Five live, manual end-to-end demos passed: native RAG citations, CRM reads, RAG + CRM, ROI calculation, and preview → confirmation flag → PostgreSQL mutation. Separately, the focused automated unit suite passed (`4 passed`). All CRM records are local deterministic demo data, not a production CRM.
+Live validation was refreshed on 2026-09-11 with the official backend image and
+standard PostgreSQL, Redis, OpenSearch, MinIO and model-server services. Persona 1
+used Search Tool 1, Custom Action 12 and the indexed knowledge files with a real
+`deepseek-v4-flash` OpenAI-compatible provider. Five live, manual end-to-end demos
+passed: Agent discovery, CRM reads, RAG with native citations, the read-only
+Sales/Product/Technical Deal Council, and preview → explicit confirmation flag →
+exactly-once PostgreSQL mutation. The separate deterministic Harness passed 22
+Sales unit tests, 13 eval definitions, 8 PostgreSQL API integration tests and 2
+Deal Council integration tests. All CRM records are local deterministic demo data,
+not a production CRM.
 
 The local frontend was served with the repository's documented Bun development command because a production Next.js build exceeded the available Docker Desktop resources. This did not change application source, the Dockerfile, the Compose dependency graph or locked dependencies.

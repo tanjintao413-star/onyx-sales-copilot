@@ -6,7 +6,7 @@ from collections.abc import Iterable
 
 from sqlalchemy.orm import Session
 
-from onyx.db.sales_copilot import get_deal_council_context
+from onyx.db.sales_copilot import get_deal_council_context, search_accounts
 from onyx.sales_copilot.deal_council.models import (
     ActionProposal,
     Conflict,
@@ -25,17 +25,27 @@ from onyx.sales_copilot.deal_council.models import (
 def route_request(request: str) -> RoutingDecision:
     """Route by request intent. This is deterministic to keep council routing testable."""
     text = request.casefold()
+    # Structured native-tool context can contain a CRM ``stage`` field alongside a
+    # request for a cross-functional PoC decision. The decision intent must win;
+    # a plain stage-only query remains Sales-only below.
+    if any(term in text for term in ("poc", "推进", "是否应该", "private vpc", "私有化", "技术可行")):
+        return RoutingDecision(intent="deal_poc_decision", required_agents=[CouncilAgent.SALES, CouncilAgent.PRODUCT, CouncilAgent.TECHNICAL], reason="The request needs commercial, product, and technical review.", requires_council=True)
     if any(term in text for term in ("阶段", "stage", "pipeline", "商机状态")):
         return RoutingDecision(intent="crm_status", required_agents=[CouncilAgent.SALES], reason="The request asks for CRM status.", requires_council=False)
     if any(term in text for term in ("哪个产品", "产品适合", "product fit", "适合哪个")):
         return RoutingDecision(intent="product_fit", required_agents=[CouncilAgent.SALES, CouncilAgent.PRODUCT], reason="Product fit needs account context and product facts.", requires_council=True)
-    if any(term in text for term in ("poc", "推进", "是否应该", "private vpc", "私有化", "技术可行")):
-        return RoutingDecision(intent="deal_poc_decision", required_agents=[CouncilAgent.SALES, CouncilAgent.PRODUCT, CouncilAgent.TECHNICAL], reason="The request needs commercial, product, and technical review.", requires_council=True)
     return RoutingDecision(intent="account_review", required_agents=[CouncilAgent.SALES], reason="No cross-functional requirement was detected.", requires_council=False)
 
 
-def _account_name(request: str) -> str:
-    return "星海科技" if "星海" in request else request
+def _account_name(request: str, db_session: Session) -> str:
+    """Resolve an account name embedded in natural-language tool context.
+
+    Prefer the longest exact name so similarly named accounts such as 星海科技 and
+    星海科技（苏州） remain distinct. If none is present, preserve the original
+    query so the existing insufficient-information behavior remains intact.
+    """
+    matches = [account.name for account in search_accounts(db_session) if account.name in request]
+    return max(matches, key=len) if matches else request
 
 
 def _sales_assessment(context: dict[str, object]) -> DepartmentAssessment:
@@ -96,7 +106,7 @@ def _decision(assessments: Iterable[DepartmentAssessment]) -> Recommendation:
 def run_deal_council(request: str, db_session: Session) -> DealCouncilDecision:
     """Run read-only specialists, one optional resolution round, and deterministic synthesis."""
     routing = route_request(request)
-    context = get_deal_council_context(db_session, _account_name(request))
+    context = get_deal_council_context(db_session, _account_name(request, db_session))
     builders = {CouncilAgent.SALES: _sales_assessment, CouncilAgent.PRODUCT: _product_assessment, CouncilAgent.TECHNICAL: _technical_assessment}
     assessments = [builders[agent](context) for agent in routing.required_agents]
     conflicts = detect_conflicts(assessments)

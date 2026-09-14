@@ -1,0 +1,288 @@
+{
+  "purpose": "复杂 Sales Copilot Demo / 前端人工测试数据规范。请由 Codex 适配现有 seed_sales_copilot_demo.py，而不是直接假定字段完全匹配。",
+  "accounts": [
+    {
+      "id": 1,
+      "name": "星海科技",
+      "industry": "制造",
+      "employee_count": 3000,
+      "region": "华东",
+      "notes": "IT 与 HR 知识咨询量高；正在评估企业 Agent 私有化 PoC；要求数据不离开客户 VPC；当前已完成 Discovery 和 Demo。"
+    },
+    {
+      "id": 2,
+      "name": "云桥金融",
+      "industry": "金融",
+      "employee_count": 12000,
+      "region": "华东",
+      "notes": "高合规客户；禁止 SaaS；要求 180 天审计留痕、SAML SSO、HSM 对接；正在进行安全评审。"
+    },
+    {
+      "id": 3,
+      "name": "远航零售",
+      "industry": "零售",
+      "employee_count": 8000,
+      "region": "华南",
+      "notes": "门店知识咨询量大；接受 SaaS；业务 Champion 明确；希望 6 周内完成试点。"
+    },
+    {
+      "id": 4,
+      "name": "华北能源",
+      "industry": "能源",
+      "employee_count": 16000,
+      "region": "华北",
+      "notes": "要求完全离线、物理隔离网络、CPU-only、国密算法；RFP 金额高但技术约束极强。"
+    },
+    {
+      "id": 5,
+      "name": "智源医疗",
+      "industry": "医疗",
+      "employee_count": 4500,
+      "region": "华东",
+      "notes": "涉及患者隐私数据；要求私有化、RBAC、审计、脱敏与数据保留策略；当前需求仍在 Discovery。"
+    },
+    {
+      "id": 6,
+      "name": "凌云软件",
+      "industry": "软件",
+      "employee_count": 900,
+      "region": "华东",
+      "notes": "希望快速建设客服知识库；预算有限；技术团队较强；倾向标准 SaaS。"
+    },
+    {
+      "id": 7,
+      "name": "星海科技（苏州）",
+      "industry": "软件服务",
+      "employee_count": 520,
+      "region": "华东",
+      "notes": "与星海科技名称相近但为不同客户；主要需求是内部技术支持知识库，预算较小。"
+    },
+    {
+      "id": 8,
+      "name": "未来教育",
+      "industry": "教育",
+      "employee_count": 2500,
+      "region": "华中",
+      "notes": "希望建立教师知识助手；接受公有云；预算敏感；决策周期短。"
+    }
+  ],
+  "opportunities": [
+    {
+      "id": 1,
+      "account_id": 1,
+      "name": "企业知识 Agent 项目",
+      "stage": "Proposal",
+      "expected_revenue_rmb": 500000,
+      "product_name": "Onyx Enterprise Agent",
+      "expected_close_date": "2026-10-30"
+    },
+    {
+      "id": 2,
+      "account_id": 1,
+      "name": "私有化部署增购",
+      "stage": "Discovery",
+      "expected_revenue_rmb": 320000,
+      "product_name": "Onyx Private Deployment",
+      "expected_close_date": "2026-12-15"
+    },
+    {
+      "id": 3,
+      "account_id": 2,
+      "name": "智能投研知识助手",
+      "stage": "Security Review",
+      "expected_revenue_rmb": 1200000,
+      "product_name": "Onyx Private Deployment",
+      "expected_close_date": "2026-11-20"
+    },
+    {
+      "id": 4,
+      "account_id": 3,
+      "name": "门店知识助手试点",
+      "stage": "Demo",
+      "expected_revenue_rmb": 280000,
+      "product_name": "Onyx Enterprise Agent",
+      "expected_close_date": "2026-10-10"
+    },
+    {
+      "id": 5,
+      "account_id": 4,
+      "name": "内网知识检索 RFP",
+      "stage": "Proposal",
+      "expected_revenue_rmb": 2000000,
+      "product_name": "Onyx Private Deployment",
+      "expected_close_date": "2026-12-31"
+    },
+    {
+      "id": 6,
+      "account_id": 5,
+      "name": "医学知识助手",
+      "stage": "Discovery",
+      "expected_revenue_rmb": 700000,
+      "product_name": "Onyx Private Deployment",
+      "expected_close_date": "2027-01-20"
+    },
+    {
+      "id": 7,
+      "account_id": 6,
+      "name": "客服知识库",
+      "stage": "Discovery",
+      "expected_revenue_rmb": 180000,
+      "product_name": "Onyx Knowledge Search",
+      "expected_close_date": "2026-10-25"
+    },
+    {
+      "id": 8,
+      "account_id": 7,
+      "name": "技术支持知识库",
+      "stage": "Demo",
+      "expected_revenue_rmb": 160000,
+      "product_name": "Onyx Knowledge Search",
+      "expected_close_date": "2026-10-18"
+    },
+    {
+      "id": 9,
+      "account_id": 8,
+      "name": "教师知识助手",
+      "stage": "Proposal",
+      "expected_revenue_rmb": 220000,
+      "product_name": "Onyx Enterprise Agent",
+      "expected_close_date": "2026-10-05"
+    }
+  ],
+  "activities": [
+    {
+      "id": 1,
+      "account_id": 1,
+      "opportunity_id": 1,
+      "activity_type": "discovery",
+      "summary": "确认 IT 与 HR 每日重复知识咨询量大；要求数据不离开客户 VPC。",
+      "occurred_at": "2026-08-18T10:00:00+08:00"
+    },
+    {
+      "id": 2,
+      "account_id": 1,
+      "opportunity_id": 1,
+      "activity_type": "demo",
+      "summary": "演示 RAG、引用与结构化 Tool Calling；客户要求补充制造业案例。",
+      "occurred_at": "2026-08-29T14:00:00+08:00"
+    },
+    {
+      "id": 3,
+      "account_id": 1,
+      "opportunity_id": 1,
+      "activity_type": "security_review",
+      "summary": "客户安全团队要求 Azure AD SSO、审计日志至少 180 天，并确认禁止业务数据出 VPC。",
+      "occurred_at": "2026-09-05T15:00:00+08:00"
+    },
+    {
+      "id": 4,
+      "account_id": 2,
+      "opportunity_id": 3,
+      "activity_type": "discovery",
+      "summary": "客户明确禁止 SaaS；需要 SAML SSO、180 天审计、HSM 对接。",
+      "occurred_at": "2026-08-20T11:00:00+08:00"
+    },
+    {
+      "id": 5,
+      "account_id": 2,
+      "opportunity_id": 3,
+      "activity_type": "security_review",
+      "summary": "HSM 为正式上线前置条件；若 2026Q4 仍不可用则项目延期。",
+      "occurred_at": "2026-09-04T16:00:00+08:00"
+    },
+    {
+      "id": 6,
+      "account_id": 3,
+      "opportunity_id": 4,
+      "activity_type": "demo",
+      "summary": "业务 Champion 反馈积极；希望 6 周上线 50 家门店试点。",
+      "occurred_at": "2026-09-02T10:30:00+08:00"
+    },
+    {
+      "id": 7,
+      "account_id": 3,
+      "opportunity_id": 4,
+      "activity_type": "commercial",
+      "summary": "预算上限约 30 万，SaaS 可接受，无私有化硬要求。",
+      "occurred_at": "2026-09-06T13:30:00+08:00"
+    },
+    {
+      "id": 8,
+      "account_id": 4,
+      "opportunity_id": 5,
+      "activity_type": "technical",
+      "summary": "RFP 要求物理隔离、完全离线、CPU-only、SM2/SM4；不得调用外部模型 API。",
+      "occurred_at": "2026-09-01T09:00:00+08:00"
+    },
+    {
+      "id": 9,
+      "account_id": 5,
+      "opportunity_id": 6,
+      "activity_type": "discovery",
+      "summary": "需要患者数据脱敏、RBAC、审计与数据保留策略；允许客户 VPC 内 GPU。",
+      "occurred_at": "2026-09-03T15:30:00+08:00"
+    },
+    {
+      "id": 10,
+      "account_id": 6,
+      "opportunity_id": 7,
+      "activity_type": "discovery",
+      "summary": "客服团队约 80 人，现有 FAQ 分散；预算 20 万以内，希望 4 周上线。",
+      "occurred_at": "2026-09-07T11:00:00+08:00"
+    },
+    {
+      "id": 11,
+      "account_id": 7,
+      "opportunity_id": 8,
+      "activity_type": "demo",
+      "summary": "该客户为苏州主体，与星海科技并非同一账户；希望内部技术支持知识库。",
+      "occurred_at": "2026-09-08T10:00:00+08:00"
+    },
+    {
+      "id": 12,
+      "account_id": 8,
+      "opportunity_id": 9,
+      "activity_type": "proposal",
+      "summary": "客户希望国庆前确定方案；预算约 25 万；不要求私有化。",
+      "occurred_at": "2026-09-08T14:30:00+08:00"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Onyx Enterprise Agent",
+      "edition": "Enterprise",
+      "description": "面向企业知识问答、RAG、Agent、Tool Calling、Citation 与基础权限控制。"
+    },
+    {
+      "id": 2,
+      "name": "Onyx Private Deployment",
+      "edition": "Enterprise",
+      "description": "部署在客户 VPC 或私有基础设施内，适合数据驻留与网络隔离要求较高的客户。"
+    },
+    {
+      "id": 3,
+      "name": "Onyx Knowledge Search",
+      "edition": "Business",
+      "description": "聚焦企业文档检索、RAG、引用与知识搜索，实施复杂度较低。"
+    },
+    {
+      "id": 4,
+      "name": "Onyx Sales Copilot",
+      "edition": "Solution",
+      "description": "CRM + RAG + Tool Calling 的销售助手方案，可做 Account Brief、Pipeline 分析和行动建议。"
+    },
+    {
+      "id": 5,
+      "name": "Onyx Security & Audit Pack",
+      "edition": "Add-on",
+      "description": "增强审计、访问控制与安全治理能力；具体适配能力以技术指南为准。"
+    },
+    {
+      "id": 6,
+      "name": "Onyx SSO/RBAC Pack",
+      "edition": "Add-on",
+      "description": "支持企业 SSO/RBAC 集成场景；具体协议和版本以当前产品文档为准。"
+    }
+  ]
+}
